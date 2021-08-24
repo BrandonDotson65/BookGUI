@@ -1,5 +1,5 @@
 from tkinter import *
-import back_end
+from back_end import Database
 """
 A program that stores the following information:
 Author
@@ -14,6 +14,7 @@ Add
 Delete
 Close
 """
+db = Database()
 
 mainWindow = Tk()
 mainWindow.resizable(0,0)
@@ -72,31 +73,30 @@ def get_selected_row(event):
     except IndexError:
         pass
 
-
 #wrapper functions
 def view_rows():
     #delete previous entries so no overlap
     listB.delete(0, END)
-    for row in back_end.view():
+    for row in db.view():
         listB.insert(END, row)
 
 def search_data():
     listB.delete(0, END)
-    rows = back_end.search_rows(title_text.get(), author_text.get(), year_text.get(), isbn_text.get())
+    rows = db.search_rows(title_text.get(), author_text.get(), year_text.get(), isbn_text.get())
     for row in rows:
         listB.insert(END, row)
 
 def add_entry():
-    back_end.insert_row(title_text.get(), author_text.get(), year_text.get(), isbn_text.get())
+    db.insert_row(title_text.get(), author_text.get(), year_text.get(), isbn_text.get())
     listB.delete(0, END)
     listB.insert(END, (title_text.get(), author_text.get(), year_text.get(), isbn_text.get()))
 
 def update_row():
-    back_end.update(selected_row[0], title_text.get(), author_text.get(), year_text.get(), isbn_text.get())
+    db.update(selected_row[0], title_text.get(), author_text.get(), year_text.get(), isbn_text.get())
     view_rows()
 
 def delete_row():
-    back_end.delete(selected_row[0])
+    db.delete(selected_row[0])
     view_rows()
 
 def clear_listB():
